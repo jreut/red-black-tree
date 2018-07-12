@@ -49,17 +49,64 @@ print_rbtree(struct RBTree *t)
 		print_rbtree(t->left);
 		printf(") (");
 		print_rbtree(t->right);
-		printf(")\n");
+		printf(")");
 	}
 }
+
+void
+balance(struct RBTree *t)
+{
+	if (t == NULL) {
+		printf("balance(NULL)\n");
+		return;
+	}
+	if (t->color != BLACK) {
+		printf("balance({ .color = RED })\n");
+		return;
+	}
+	if (t->left != NULL
+		&& t->left->color == RED
+		&& t->left->left != NULL
+		&& t->left->left->color == RED
+		) {
+		struct RBTree *a = t->left->left->left;
+		struct RBTree *b = t->left->left->right;
+		struct RBTree *c = t->left->right;
+		struct RBTree *d = t->right;
+		int x = t->left->left->value;
+		int y = t->left->value;
+		int z = t->value;
+	}
+	if (t->right != NULL) {
+	}
+}
+
+void
+ins(struct RBTree **t, int v)
+{
+	if ((*t) == NULL) {
+		rbtree_new(t, v, RED);
+		return;
+	}
+
+	if (v == (*t)->value) {
+		return;
+	} else if (v < (*t)->value) {
+		ins(&((*t)->left), v);
+	} else {
+		ins(&((*t)->right), v);
+	}
+}
+
 
 int
 main(int argc, char *argv[])
 {
-	struct RBTree *t;
-	rbtree_new(&t, 42, RED);
+	struct RBTree *t = NULL;
+	ins(&t, 42);
+	ins(&t, 43);
+	ins(&t, 0);
 	print_rbtree(t);
 	rbtree_free(t);
-	print_rbtree(t);
 	return EXIT_SUCCESS;
 }
